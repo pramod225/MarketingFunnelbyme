@@ -1,0 +1,70 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewBag.Title | Marketing Funnel</title>
+    <link rel="icon" href="~/favicon.ico" type="image/x-icon" />
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" />
+    <link rel="canonical" href="@ViewBag.CanonicalUrl" />
+    @Styles.Render("~/Content/Admin/css")
+    @Scripts.Render("~/bundles/Admin/ajaxjqueryjs")
+    @Styles.Render("~/Content/Admin/kendouicss")
+    @Scripts.Render("~/bundles/Admin/kendouijs")
+</head>
+<body @(ViewBag.LoginPage == null ? "" : "class=body-login")>
+    @if (User.Identity.IsAuthenticated)
+    {
+        <div class="container-fluid">
+            <div class="navbar navbar-default navbar-fixed-top">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a class="navbar-brand" href="@Url.Action("Index","Home")">
+                        <h2 class="logo-font text-center">Yspl <span>MarketingFunnel</span> </h2>
+                    </a>
+                </div>
+                <div class="navbar-collapse collapse">
+                    @Html.Partial("_LoginPartial")
+                </div>
+            </div>
+        </div>
+    }
+    <div class="body-content">
+        @if (User.Identity.IsAuthenticated)
+        {
+            <div class="left-menu drawer-menu @(Request.Cookies["IsMenuOpen"]==null?"":Request.Cookies["IsMenuOpen"].Value=="1"?"drawer-menu-active":"")">
+                <a href="#" class="drawer-menu-controller">
+                    <i class="glyphicon @(Request.Cookies["IsMenuOpen"]==null?"glyphicon-menu-right":Request.Cookies["IsMenuOpen"].Value=="1"?"glyphicon-menu-left":"glyphicon-menu-right")"></i>
+                </a>
+                <a href="@Url.Action("Index", "Admin")" data-toggle="tooltip" data-placement="right" title="Dashboard">
+                    <img class="icon-small" src="~/Content/icons/glyphicons-basic-670-dashboard.svg" />
+                    Dashboard
+                </a>
+                @if (User.IsInRole("Admin"))
+                {
+                    <a href="@Url.Action("Users", "Admin")" data-toggle="tooltip" data-placement="right" title="Users">
+                        <img class="icon-small" src="~/Content/icons/glyphicons-basic-321-users.svg" /> Users
+                    </a>
+                }
+            </div>
+        }
+        <div class="main-body">
+            <div class="main-body-content">
+                @RenderBody()
+            </div>
+            <hr />
+            <footer>
+                <p>&copy; @DateTime.Now.Year - Yukti Solutions Private Limited. </p>
+            </footer>
+        </div>
+    </div>
+    @(Html.Kendo().Notification().Name("Notify").Position(pos => pos.Pinned(true).Top(30).Right(30)).AutoHideAfter(2000))
+    @Scripts.Render("~/bundles/bootstrap")
+    @Scripts.Render("~/bundles/Admin/drawermenujs")
+    @RenderSection("scripts", required: false)
+</body>
+</html>

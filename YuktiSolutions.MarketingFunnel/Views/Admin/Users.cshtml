@@ -1,0 +1,75 @@
+﻿@{
+    ViewBag.Title = "Users";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+@section scripts{
+    <script src="~/Scripts/WebManager/common.js"></script>
+}
+<h2>@ViewBag.Title</h2>
+<div class="k-toolbar pad-lr-5">
+    <div class="pull-left mt-5">
+        <div class="input-group input-group-sm search-box">
+            <input type="text" id="SearchBox" class="form-control" placeholder="Search for..." onchange="$('#Users').data('kendoGrid').dataSource.read();" />
+            <span class="input-group-btn"><button class="btn btn-default" id="btnSearch" onclick="BindGrid()"><i class="glyphicon glyphicon-search"></i></button></span>
+        </div>
+    </div>
+    <div class="pull-right mt-5">
+        <a href="@Url.Action("CreateUser","Admin")" class="btn btn-primary btn-sm"><i class="glyphicon glyphicon-plus-sign"></i> Add New User</a>
+
+        <div class="btn-group btn-group">
+            <button type="button" class="btn btn-default dropdown-toggle btn-sm" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <i class="glyphicon glyphicon-option-vertical"></i> More Options
+            </button>
+            <ul class="dropdown-menu dropdown-menu-right">
+                <li><a href="@Url.Action("DeleteUsers","Admin")" onclick="BulkAction(event,this,'Users','Please select users to delete.','Are you sure you want to delete the selected users?')"><i class="glyphicon glyphicon glyphicon-trash"></i> Delete Users</a></li>
+            </ul>
+        </div>
+    </div>
+    <div class="clearfix"></div>
+</div>
+@(Html.Kendo().Grid<YuktiSolutions.MarketingFunnel.Models.UI.UserListItem>()
+                    .Name("Users")
+                     .Pageable(page => page.Enabled(true).PageSizes(new string[] { "20", "50", "100", "500", "1000", "All" }))
+                        .Filterable(filter => filter.Enabled(true))
+                        .Sortable(sort => sort.Enabled(true))
+                        .Resizable(resize => resize.Columns(true))
+                        .Scrollable()
+                         .HtmlAttributes(new { style = "height: 450px" })
+                        .Mobile()
+                    .Columns(cols =>
+                    {
+                        cols.Template(c => c.ID).Width("10px").ClientTemplate("<input type='checkbox' class='checked-item' data-id='#:ID#' />").HeaderTemplate("<input type='checkbox' class='checkAllCls' onclick='GridCheckUncheck(this,\"Users\")' />");
+                        cols.Bound(c => c.Name).Width("40px").ClientTemplate("<a href='/admin/createuser/#:ID#'>#:Name#</a>");
+                        cols.Bound(c => c.Email).Width("70px");
+                        cols.Bound(c => c.PhoneNumber).Title("Phone No.").Width("60px");
+                        cols.Bound(c => c.Roles).Width("40px");
+                    })
+                    .DataSource(ds => ds.Ajax().Read(read => read.Action("Users_Read", "Admin").Data("Search")))
+)
+
+<div class="modal fade" tabindex="-1" role="dialog" id="moveData">
+    @using (Ajax.BeginForm("DeleteUsers", new AjaxOptions { HttpMethod = "POST", OnSuccess = "CommonSaveChanges" }))
+    {
+        <input name="IDs" id="SelectedIDs" type="hidden" />
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title">Allocate Data</h4>
+                </div>
+                <div class="modal-body">
+                    @(Html.Kendo().DropDownList().Name("AllocateTo")
+                                               .AutoBind(false)
+                                               .DataTextField("Name")
+                                               .DataValueField("ID")
+                                               .DataSource(ds => ds.Read(read => read.Action("ReadOtherUsers", "Admin").Data("")))
+                    )
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary">Allocate and Delete</button>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    }
+</div><!-- /.modal -->

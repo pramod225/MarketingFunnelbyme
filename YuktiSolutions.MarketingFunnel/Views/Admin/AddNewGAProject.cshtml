@@ -1,0 +1,64 @@
+﻿@{
+    ViewBag.Title = "Add New Project";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+@section scripts{
+    <script type="text/javascript" src="~/Scripts/WebManager/mktfunnelga.js"></script>
+}
+<h3>Add New Project</h3>
+@using (Ajax.BeginForm("SaveAnalyticsCredential", "Admin", new AjaxOptions { HttpMethod = "POST", OnSuccess = "onAnalyticsCredentialsaved" }, new { enctype = "multipart/form-data" }))
+{
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="form-group">
+                <label>Project Name</label>
+                <input type="text" maxlength="100" name="ApplicationName" id="newApplicationName" class="form-control" data-val="true" data-val-required="Name is required." required />
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6">
+            <div class="form-group">
+                <label>Start Date</label>
+                <input type="date" name="GAStartDate" id="newGAStartDate" class="form-control" data-val="true" data-val-required="Start Date is required." required />
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="form-group">
+                <label>End Date</label>
+                <input type="date" name="GAEndDate" id="newGAEndDate" class="form-control" data-val="true" data-val-required="End Date is required." required />
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="form-group">
+                <label>Google Analytics Email</label>
+                <input type="email" maxlength="100" name="GAEmail" id="newGAEmail" class="form-control" data-val="true" data-val-required="Google Anlytics Email is required." required />
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="form-group">
+                <label>Application View-Id</label>
+                <input type="number" maxlength="100" name="GAViewID" id="newGAViewID" class="form-control" data-val="true" data-val-required="Google Analytics View-ID is required." required />
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <div class="form-group">
+                <label>Select .P12 File</label>
+                <input type="file" name="GAP12File" id="newGAP12File" class="form-control" required />
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <div class="form-group">
+                <label>Select Json Config. File</label>
+                <input type="file" name="GAJsonFile" id="newGAJsonFile" class="form-control" required />
+            </div>
+        </div>
+    </div>
+    <div class="pull-left">
+        <button type="submit" class="btn btn-primary">Save Changes</button>
+    </div>
+}

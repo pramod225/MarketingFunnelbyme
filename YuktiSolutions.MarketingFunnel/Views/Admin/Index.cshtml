@@ -1,0 +1,55 @@
+﻿@model IEnumerable<YuktiSolutions.MarketingFunnel.Models.Database.AnalyticsCredential>
+@{
+    ViewBag.Title = "Dashboard";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+<style>
+    .mybox {
+        margin: 10px;
+        padding: 5px;
+        border: 1px solid black;
+        border-radius: 25px;
+    }
+</style>
+<h3>
+    Get Started
+</h3>
+<div class="row">
+    <div class="col-md-12">
+        <div class="pull-left">
+            <p>Click on the project to navigate</p>
+        </div>
+        <div class="pull-right">
+            <a href="@Url.Action("AddNewGAProject","Admin")" class="btn btn-primary btn-sm"><i class="glyphicon glyphicon-plus-sign"></i> Add New Project</a>
+        </div>
+    </div>
+</div>
+<br />
+<div class="row">
+    <div class="col-md-12">
+        @foreach (var item in Model)
+        {
+            <div class="col-md-4">
+                <div class="mybox">
+                    <h4><b>@item.ApplicationName</b></h4>
+                    <p>
+                        @if (item.GAStartDate != null)
+                        {
+                            <span class="text-success">@Convert.ToDateTime(item.GAStartDate).ToString("dd,MMMM-yyyy")</span>
+                        } -
+                        @if (item.GAEndDate != null)
+                        {
+                            <span class="text-danger">@Convert.ToDateTime(item.GAEndDate).ToString("dd,MMMM-yyyy")</span>
+                        }
+                    </p>
+                    <p>
+                        <b>Current Keyword Research - </b>
+                        <a href="@Url.Action("GoogleAnalyticDetail","Admin",new { id=item.ID})" class="btn btn-default"><i class="fa fa-arrow-right text-info"></i></a>
+                    </p>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+<br />

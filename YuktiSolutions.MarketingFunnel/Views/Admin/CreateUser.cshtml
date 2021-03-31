@@ -1,0 +1,85 @@
+﻿@model YuktiSolutions.MarketingFunnel.Models.UI.UserModel
+@{
+    ViewBag.Title = "CreateUser";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<h2>Create/Update User</h2>
+@using (Ajax.BeginForm("CreateUser", "Admin", new AjaxOptions { HttpMethod = "POST", OnSuccess = "OnUserSaved" }))
+{
+
+    @Html.HiddenFor(m => m.ID)
+
+    <div class="panel-body">
+        <div class="form-group">
+            <div class="row">
+                <div class="col-md-6">
+                    @Html.LabelFor(m => m.DisplayName)
+                    @Html.TextBoxFor(m => m.DisplayName, new { @class = "form-control", placeholder = "Enter display name." })
+                    @Html.ValidationMessageFor(m => m.DisplayName, null, new { @class = "text-danger" })
+                </div>
+
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="row">
+                <div class="col-md-6">
+                    @Html.LabelFor(m => m.Email)
+                    @Html.TextBoxFor(m => m.Email, new { @class = "form-control", placeholder = "Enter email." })
+                    @Html.ValidationMessageFor(m => m.Email, null, new { @class = "text-danger" })
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="row">
+                <div class="col-md-6">
+                    @Html.LabelFor(m => m.PhoneNumber)
+                    @Html.TextBoxFor(m => m.PhoneNumber, new { @class = "form-control", placeholder = "Enter phone no." })
+                    @Html.ValidationMessageFor(m => m.PhoneNumber, null, new { @class = "text-danger" })
+                </div>
+            </div>
+        </div>
+        <div class="checkbox">
+            <label>
+                @Html.CheckBoxFor(m => m.IsPasswordChanged) Change password as well (when being modified).
+            </label>
+
+        </div>
+        <div class="form-group">
+            <div class="row">
+                <div class="col-md-6">
+                    @Html.LabelFor(m => m.Password)
+                    @Html.PasswordFor(m => m.Password, new { @class = "form-control", placeholder = "Enter password", @autocomplete = "off" })
+                  
+                </div>
+                <div class="col-md-6">
+                    @Html.LabelFor(m => m.ComparePassword)
+                    @Html.PasswordFor(m => m.ComparePassword, new { @class = "form-control", placeholder = "Enter compare password", @autocomplete = "off" })
+                    @Html.ValidationMessageFor(m => m.ComparePassword, "", new { @class = "text-danger" })
+                </div>
+            </div>
+        </div>
+
+        <div class="checkbox">
+            <label>
+                @Html.CheckBoxFor(m => m.IsActive) This user is active.
+            </label>
+        </div>
+        <div class="form-group">
+            <label>Role</label>
+
+            @Html.DropDownListFor(x => x.Role,new List<SelectListItem> { new SelectListItem {Text="Admin",Value="Admin" },
+            new SelectListItem {Text="Manager",Value="Manager" },new SelectListItem {Text="Editor",Value="Editor" }
+            ,new SelectListItem {Text="Content Writer",Value="Content Writer" }
+        },new { @class="form-control"})
+        </div>
+    </div>
+    <div class="panel-footer">
+        <button class="btn btn-primary" type="submit"><i class="glyphicon glyphicon-floppy-save"></i> Save User</button> <a href="@Url.Action("Users","Admin")" class="btn btn-link"><i class="glyphicon glyphicon-menu-left"></i> Cancel</a>
+    </div>
+}
+
+@section scripts{
+    @Scripts.Render("~/bundles/jqueryval")
+    <script src="~/Scripts/smartcrmuser.js"></script>
+}

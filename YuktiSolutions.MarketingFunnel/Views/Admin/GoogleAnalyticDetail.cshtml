@@ -1,0 +1,11 @@
+﻿@model IEnumerable<YuktiSolutions.MarketingFunnel.Models.GAListViewModel>
+@{
+    ViewBag.Title = "Google Analytics Detail";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+<h2>Google Analytics Detail</h2>
+@foreach(var items in Model)
+{
+    <div>@items.Dimensions</div>
+    <div>@items.Metrics</div>
+}

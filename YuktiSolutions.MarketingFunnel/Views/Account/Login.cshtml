@@ -1,0 +1,61 @@
+﻿@using YuktiSolutions.MarketingFunnel.Models
+@model LoginViewModel
+@{
+    ViewBag.Title = "Login to continue.";
+    ViewBag.LoginPage = true;
+    Layout = null;
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Login</title>
+    <link rel="icon" href="~/favicon.ico" type="image/x-icon" />
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" />
+    @Styles.Render("~/Content/Admin/css")
+    <style>
+        /*overide bootstrap css*/
+        .row {
+            margin-right: 15px;
+            margin-left: 15px;
+        }
+        /* write code here*/
+    </style>
+</head>
+<body>
+    <div class="row">
+        <div class="col-md-3"></div>
+        <div class="col-md-6">
+            <div id="loginForm" class="extform">
+                <h2 class="logo-font text-center"><span>Marketing</span></h2>
+                <h2 class="text-center">Funnel</h2>
+                @using (Html.BeginForm("Login", "Account", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { role = "form" }))
+                {
+                    @Html.AntiForgeryToken()
+                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                    <div class="form-group">
+                        @Html.LabelFor(m => m.Email)
+                        @Html.TextBoxFor(m => m.Email, new { @class = "form-control", @placeholder = "Enter your email." })
+                        @Html.ValidationMessageFor(m => m.Email, "", new { @class = "text-danger" })
+                    </div>
+                    <div class="form-group">
+                        @Html.LabelFor(m => m.Password)
+                        @Html.PasswordFor(m => m.Password, new { @class = "form-control", @placeholder = "Enter your password." })
+                        @Html.ValidationMessageFor(m => m.Password, "", new { @class = "text-danger" })
+                    </div>
+                    <div>
+                        <input type="submit" value="Continue" class="btn btn-primary pull-left " />
+                        @Html.ActionLink("Forgot your password?", "ForgotPassword", null, new { @class = "pull-right" })
+                        <div class="clearfix"></div>
+                    </div>
+                }
+                <hr />
+                <p>&copy; @DateTime.Now.Year - Yukti Solutions Private Limited. </p>
+            </div>
+        </div>
+        <div class="col-md-3"></div>
+    </div>
+    @Scripts.Render("~/bundles/bootstrap")
+</body>
+</html>
